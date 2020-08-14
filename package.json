@@ -1,0 +1,25 @@
+{
+  "name": "genart-tutorial",
+  "version": "1.0.0",
+  "description": "",
+  "main": "sketch.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "canvas-sketch": "^0.7.3",
+    "canvas-sketch-util": "^1.10.0",
+    "glsl-dither": "^1.0.1",
+    "glsl-noise": "0.0.0",
+    "glslify": "^7.0.0",
+    "hex-rgb": "^4.1.0",
+    "nice-color-palettes": "^3.0.0",
+    "perspective-camera": "^2.0.1",
+    "primitive-icosphere": "^1.0.2",
+    "regl": "^1.6.1",
+    "three": "^0.119.1"
+  }
+}
