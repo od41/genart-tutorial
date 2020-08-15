@@ -1,5 +1,7 @@
 // Ensure ThreeJS is in global scope for the 'examples/'
 global.THREE = require("three");
+const random = require("canvas-sketch-util/random");
+const palettes = require("nice-color-palettes");
 
 // Include any additional ThreeJS examples below
 // require("three/examples/js/controls/OrbitControls");
@@ -7,6 +9,9 @@ global.THREE = require("three");
 const canvasSketch = require("canvas-sketch");
 
 const settings = {
+  dimensions: [512, 512],
+  fps: 24,
+  duration: 4,
   // Make the loop animated
   animate: true,
   // Get a WebGL canvas rather than 2D
@@ -20,7 +25,7 @@ const sketch = ({ context }) => {
   });
 
   // WebGL background color
-  renderer.setClearColor("#ccc", 1);
+  renderer.setClearColor('hsl(0, 0%, 90%)', 1);
 
   // Setup a camera
   const camera = new THREE.OrthographicCamera();
@@ -36,17 +41,36 @@ const sketch = ({ context }) => {
   // Setup a geometry
   const geometry = new THREE.BoxGeometry(1, 1, 1);
 
-  // Setup a material
-  const material = new THREE.MeshBasicMaterial({
-    color: "red",
-    // roughness: 0.75,
-    // flatShading: true,
-    // wireframe: true
-  });
 
-  // Setup a mesh with geometry + material
-  const mesh = new THREE.Mesh(geometry, material);
-  scene.add(mesh);
+  for(let i=0; i<30; i++) {
+      // Setup a mesh with geometry + material
+    const mesh = new THREE.Mesh(
+          geometry, 
+          new THREE.MeshStandardMaterial({
+            color: random.pick(random.pick(palettes)),
+            // roughness: 0.75,
+            // flatShading: true,
+            // wireframe: true
+          })
+        );
+    mesh.position.set(
+        random.range(-1, 1), 
+        random.range(-1, 1),
+        random.range(-1, 1));
+    mesh.scale.set(
+      random.range(-1, 1), 
+      random.range(-1, 1),
+      random.range(-1, 1));
+    mesh.scale.multiplyScalar(0.3)
+    scene.add(mesh);
+  }
+
+  scene.add(new THREE.AmbientLight('hsl(174, 9%, 23%)'))
+
+  const light = new THREE.DirectionalLight('white', 1);
+  light.position.set(2, 2, 4)
+  scene.add(light);
+
 
   // draw each frame
   return {
@@ -77,8 +101,10 @@ const sketch = ({ context }) => {
       camera.updateProjectionMatrix();
     },
     // Update & render your scene here
-    render({ time }) {
-      mesh.rotation.y = time * 0.1;
+    render({ playhead }) {
+      scene.rotation.z = playhead * Math.PI * 2; 
+      scene.rotation.x = playhead * Math.PI * 2; 
+      // scene.rotation.y = time * 0.05; 
       // controls.update();
       renderer.render(scene, camera);
     },
